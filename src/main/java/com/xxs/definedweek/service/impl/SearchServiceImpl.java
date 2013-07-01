@@ -1,8 +1,3 @@
-/*
-
-
-
- */
 package com.xxs.definedweek.service.impl;
 
 import java.math.BigDecimal;
@@ -11,15 +6,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import com.xxs.definedweek.Page;
-import com.xxs.definedweek.Pageable;
-import com.xxs.definedweek.dao.ArticleDao;
-import com.xxs.definedweek.dao.ProductDao;
-import com.xxs.definedweek.entity.Article;
-import com.xxs.definedweek.entity.Product;
-import com.xxs.definedweek.entity.Product.OrderType;
-import com.xxs.definedweek.service.SearchService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
@@ -40,6 +26,15 @@ import org.hibernate.search.jpa.Search;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wltea.analyzer.lucene.IKAnalyzer;
+
+import com.xxs.definedweek.Page;
+import com.xxs.definedweek.Pageable;
+import com.xxs.definedweek.dao.ArticleDao;
+import com.xxs.definedweek.dao.ProductDao;
+import com.xxs.definedweek.entity.Article;
+import com.xxs.definedweek.entity.Product;
+import com.xxs.definedweek.entity.Product.OrderType;
+import com.xxs.definedweek.service.SearchService;
 
 /**
  * Service - 搜索
