@@ -1,6 +1,11 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
+.checkstyle
+.classpath
+.project
+.class
+.war
+.zip
+.rar
+.settings/*
+/target/*
+/src/main/webapp/WEB-INF/classes/*
+/src/main/webapp/userfiles/*
