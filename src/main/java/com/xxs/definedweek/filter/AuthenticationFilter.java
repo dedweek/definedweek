@@ -55,6 +55,7 @@ public class AuthenticationFilter extends FormAuthenticationFilter {
 
 	@Override
 	protected org.apache.shiro.authc.AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) {
+		System.out.println("开始执行登录权限验证");
 		String username = getUsername(servletRequest);
 		String password = getPassword(servletRequest);
 		String captchaId = getCaptchaId(servletRequest);

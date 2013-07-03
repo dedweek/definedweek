@@ -20,7 +20,7 @@
 	</div>
 	<table class="input">
 		<tr>
-			<th>
+			<th>adfasdaaaaa
 				${message("admin.index.systemName")}:
 			</th>
 			<td>
@@ -38,7 +38,7 @@
 				${message("admin.index.official")}:
 			</th>
 			<td>
-				<a href="http://www.shopxx.net" target="_blank">http://www.shopxx.net</a>
+				<a href="http://www.shopxx.net" target="_blank">http://www.shopxx.net 44444444</a>
 			</td>
 			<th>
 				${message("admin.index.bbs")}:

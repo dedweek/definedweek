@@ -1,8 +1,3 @@
-/*
-
-
-
- */
 package com.xxs.definedweek;
 
 import java.util.Date;

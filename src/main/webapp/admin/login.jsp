@@ -28,7 +28,7 @@ response.sendRedirect(base + "/admin/common/main.jhtml");
 }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" class="login_page">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <%
@@ -59,6 +59,8 @@ if (applicationContext != null) {
 			message = "admin.login.authentication";
 		}
 	}
+	out.println(message+"|||");
+	out.println(loginFailure);
 %>
 <title><%=SpringUtils.getMessage("admin.login.title")%> - Powered By SHOP++</title>
 <meta http-equiv="expires" content="0" />
@@ -75,6 +77,28 @@ if (applicationContext != null) {
 <script type="text/javascript" src="<%=base%>/resources/admin/js/rsa.js"></script>
 <script type="text/javascript" src="<%=base%>/resources/admin/js/base64.js"></script>
 <script type="text/javascript" src="<%=base%>/resources/admin/js/common.js"></script>
+
+		<!-- Bootstrap framework -->
+            <link rel="stylesheet" href="<%=base%>/resources/admin/bootstrap/css/bootstrap.min.css"  />
+            <link rel="stylesheet" href="<%=base%>/resources/admin/bootstrap/css/bootstrap-responsive.min.css"  />
+        <!-- theme color-->
+            <link rel="stylesheet" href="<%=base%>/resources/admin/css/blue.css"  />
+        <!-- tooltip -->    
+			<link rel="stylesheet" href="<%=base%>/resources/admin/lib/qtip2/jquery.qtip.min.css"  />
+        <!-- main styles -->
+            <link rel="stylesheet" href="<%=base%>/resources/admin/css/style.css"  />
+    
+        <!-- favicon -->
+            <link rel="shortcut icon" href="favicon.ico" />
+    
+        <!--  <link href="../../fonts.googleapis.com/css-family=PT+Sans.css"  rel='stylesheet' type='text/css'>  -->
+    
+        <!--[if lt IE 9]>
+            <script src="js/ie/html5.js" ></script>
+			<script src="js/ie/respond.min.js" ></script>
+        <![endif]-->
+
+
 <script type="text/javascript">
 	$().ready( function() {
 		
@@ -85,6 +109,7 @@ if (applicationContext != null) {
 		var $captcha = $("#captcha");
 		var $captchaImage = $("#captchaImage");
 		var $isRememberUsername = $("#isRememberUsername");
+		var $resultMessage = $("#resultMessage");
 		
 		// 记住用户名
 		if(getCookie("adminUsername") != null) {
@@ -104,15 +129,18 @@ if (applicationContext != null) {
 		// 表单验证、记住用户名
 		$loginForm.submit( function() {
 			if ($username.val() == "") {
-				$.message("warn", "<%=SpringUtils.getMessage("admin.login.usernameRequired")%>");
+				$resultMessage.attr("class","alert alert-error alert-login");
+				$resultMessage.text("<%=SpringUtils.getMessage("admin.login.usernameRequired")%>");
 				return false;
 			}
 			if ($password.val() == "") {
-				$.message("warn", "<%=SpringUtils.getMessage("admin.login.passwordRequired")%>");
+				$resultMessage.attr("class","alert alert-error alert-login");
+				$resultMessage.text("<%=SpringUtils.getMessage("admin.login.passwordRequired")%>");
 				return false;
 			}
 			if ($captcha.val() == "") {
-				$.message("warn", "<%=SpringUtils.getMessage("admin.login.captchaRequired")%>");
+				$resultMessage.attr("class","alert alert-error alert-login");
+				$resultMessage.text("<%=SpringUtils.getMessage("admin.login.captchaRequired")%>");
 				return false;
 			}
 			
@@ -129,7 +157,10 @@ if (applicationContext != null) {
 		});
 		
 		<%if (message != null) {%>
-			$.message("error", "<%=SpringUtils.getMessage(message, setting.getAccountLockCount())%>");
+			$resultMessage.attr("class","alert alert-error alert-login");
+			//alert(message);
+			//alert(loginFailure);
+			$resultMessage.text("<%=SpringUtils.getMessage(message, setting.getAccountLockCount())%>");
 		<%}%>
 	});
 </script>
@@ -146,80 +177,52 @@ if (applicationContext != null) {
 </head>
 <body>
 	<%if (applicationContext != null) {%>
-		<div class="login">
+		<div class="login_box">
 			<form id="loginForm" action="login.jsp" method="post">
 				<input type="hidden" id="enPassword" name="enPassword" />
 				<%if (ArrayUtils.contains(setting.getCaptchaTypes(), CaptchaType.adminLogin)) {%>
 					<input type="hidden" name="captchaId" value="<%=captchaId%>" />
 				<%}%>
-				<table>
-					<tr>
-						<td width="190" rowspan="2" align="center" valign="bottom">
-							<img src="<%=base%>/resources/admin/images/login_logo.gif" alt="SHOP++" />
-						</td>
-						<th>
-							<%=SpringUtils.getMessage("admin.login.username")%>:
-						</th>
-						<td>
-							<input type="text" id="username" name="username" value="admin" class="text" maxlength="20" />
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<%=SpringUtils.getMessage("admin.login.password")%>:
-						</th>
-						<td>
-							<input type="password" id="password" class="text" value="admin" maxlength="20" autocomplete="off" />
-						</td>
-					</tr>
-					<%if (ArrayUtils.contains(setting.getCaptchaTypes(), CaptchaType.adminLogin)) {%>
-						<tr>
-							<td>
-								&nbsp;
-							</td>
-							<th>
-								<%=SpringUtils.getMessage("admin.captcha.name")%>:
-							</th>
-							<td>
-								<input type="text" id="captcha" name="captcha" class="text captcha" maxlength="4" autocomplete="off" /><img id="captchaImage" class="captchaImage" src="<%=base%>/admin/common/captcha.jhtml?captchaId=<%=captchaId%>" title="<%=SpringUtils.getMessage("admin.captcha.imageTitle")%>" />
-							</td>
-						</tr>
-					<%}%>
-					<tr>
-						<td>
-							&nbsp;
-						</td>
-						<th>
-							&nbsp;
-						</th>
-						<td>
-							<label>
-								<input type="checkbox" id="isRememberUsername" value="true" />
-								<%=SpringUtils.getMessage("admin.login.rememberUsername")%>:
-							</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							&nbsp;
-						</td>
-						<th>
-							&nbsp;
-						</th>
-						<td>
-							<input type="button" class="homeButton" value="" onclick="location.href='<%=base%>/'" /><input type="submit" class="loginButton" value="<%=SpringUtils.getMessage("admin.login.login")%>" />
-						</td>
-					</tr>
-				</table>
-				<div class="powered">COPYRIGHT © 2005-2013 SHOPXX.NET ALL RIGHTS RESERVED.</div>
-				<div class="link">
-					<a href="<%=base%>/"><%=SpringUtils.getMessage("admin.login.home")%></a> |
-					<a href="http://www.shopxx.net"><%=SpringUtils.getMessage("admin.login.official")%></a> |
-					<a href="http://bbs.shopxx.net"><%=SpringUtils.getMessage("admin.login.bbs")%></a> |
-					<a href="http://www.shopxx.net/about.html"><%=SpringUtils.getMessage("admin.login.about")%></a> |
-					<a href="http://www.shopxx.net/contact.html"><%=SpringUtils.getMessage("admin.login.contact")%></a> |
-					<a href="http://www.shopxx.net/license.html"><%=SpringUtils.getMessage("admin.login.license")%></a>
+				
+				<div class="top_b">definedweek 用户登录</div>
+				
+				<div class="alert alert-info alert-login" id="resultMessage">
+					欢迎使用definedweek后台管理系统.
 				</div>
+				
+				<div class="cnt_b">
+					<div class="formRow">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-user"></i></span>
+							<input type="text" id="username" name="username" placeholder="Username" value="admin" maxlength="20" />
+						</div>
+					</div>
+					<div class="formRow">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-lock"></i></span>
+							<input type="password" id="password" placeholder="Password" value="admin" maxlength="20" autocomplete="off" />
+						</div>
+					</div>
+					<%if (ArrayUtils.contains(setting.getCaptchaTypes(), CaptchaType.adminLogin)) {%>
+						<div class="formRow">
+							<div class="input-prepend">
+								<input type="text" id="captcha" name="captcha" class="text captcha" style="width:150px;margin-right:3px;" maxlength="4" autocomplete="off" />
+								<img id="captchaImage" class="captchaImage" src="<%=base%>/admin/common/captcha.jhtml?captchaId=<%=captchaId%>" title="<%=SpringUtils.getMessage("admin.captcha.imageTitle")%>" />
+							</div>
+						</div>
+					<%}%>
+					<div class="formRow clearfix">
+						<label class="checkbox">
+							<input type="checkbox" id="isRememberUsername" value="true" />
+							<%=SpringUtils.getMessage("admin.login.rememberUsername")%>
+						</label>
+					</div>
+				</div>
+				<div class="btm_b clearfix">
+					<button class="btn btn-inverse pull-right" type="submit" >登录</button>
+					<!--  <span class="link_reg"><a href="#reg_form">Not registered? Sign up here</a></span>  -->
+					<span class="link_reg"><a href="#">联系方式：xxxxxx</a></span>
+				</div>  
 			</form>
 		</div>
 	<%} else {%>
@@ -231,5 +234,55 @@ if (applicationContext != null) {
 			</p>
 		</fieldset>
 	<%}%>
+	
+		<script src="<%=base%>/resources/admin/js/jquery.min.js" ></script>
+        <script src="<%=base%>/resources/admin/js/jquery.actual.min.js" ></script>
+        <script src="<%=base%>/resources/admin/lib/validation/jquery.validate.js" ></script>
+		<script src="<%=base%>/resources/admin/bootstrap/js/bootstrap.min.js" ></script>
+        <script>
+            $(document).ready(function(){
+                
+				//* boxes animation
+				form_wrapper = $('.login_box');
+				function boxHeight() {
+					form_wrapper.animate({ marginTop : ( - ( form_wrapper.height() / 2) - 24) },400);	
+				};
+				form_wrapper.css({ marginTop : ( - ( form_wrapper.height() / 2) - 24) });
+                $('.linkform a,.link_reg a').on('click',function(e){
+					var target	= $(this).attr('href'),
+						target_height = $(target).actual('height');
+					$(form_wrapper).css({
+						'height'		: form_wrapper.height()
+					});	
+					$(form_wrapper.find('form:visible')).fadeOut(400,function(){
+						form_wrapper.stop().animate({
+                            height	 : target_height,
+							marginTop: ( - (target_height/2) - 24)
+                        },500,function(){
+                            $(target).fadeIn(400);
+                            $('.links_btm .linkform').toggle();
+							$(form_wrapper).css({
+								'height'		: ''
+							});	
+                        });
+					});
+					e.preventDefault();
+				});
+            });
+        </script>
+		
+		<script type="text/javascript">
+
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-32339645-1']);
+			_gaq.push(['_trackPageview']);
+		  
+			(function() {
+			  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		  
+		  </script>
 </body>
 </html>

@@ -24,7 +24,7 @@ $().ready(function() {
 	<form id="listForm" action="list.jhtml" method="get">
 		<div class="bar">
 			<a href="add.jhtml" class="iconButton">
-				<span class="addIcon">&nbsp;</span>${message("admin.common.add")}
+				<span class="addIcon">&nbsp;</span>123123eeee${message("admin.common.add")}
 			</a>
 			<div class="buttonWrap">
 				<a href="javascript:;" id="deleteButton" class="iconButton disabled">
