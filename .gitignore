@@ -5,6 +5,7 @@
 .war
 .zip
 .rar
+.jar
 .settings/*
 /target/*
 /src/main/webapp/WEB-INF/classes/*
